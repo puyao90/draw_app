@@ -24,17 +24,23 @@ function setup() {
 
   //create a toolbox for storing the tools
   toolbox = new Toolbox();
-
+  selectShape = new SelectShapebox();
   //add the tools to the toolbox.
   toolbox.addTool(new FreehandTool());
-  toolbox.addTool(new LineToTool());
-  toolbox.addTool(new RectangleTool());
+  let mT1 = new MultipleToolsContainer("icon", "xxx");
+  mT1.addTools([new LineToTool(), new RectangleTool(), new polygonTool()]);
+  toolbox.addTool(mT1);
+
+  // toolbox.addTool(new LineToTool());
+  // toolbox.addTool(new RectangleTool());
+  // toolbox.addTool(new polygonTool());
+  // selectShape.addTool(new RectangleTool());
+  // selectShape.addTool(new polygonTool());
   toolbox.addTool(new sprayCanTool());
+  toolbox.addTool(new floodFillTool());
   toolbox.addTool(new mirrorDrawTool());
   toolbox.addTool(new textTool());
   toolbox.addTool(new eraserTool());
-  toolbox.addTool(new polygonTool());
-  toolbox.addTool(new floodFillTool());
 
   // toolbox.setInitstate(() => {
   //   colourP.set()
