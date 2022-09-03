@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="lib/p5.min.js"></script>
+    <script src="lib/p5.dom.js"></script>
+    <script src="sketch.js"></script>
+
+    <!-- add extra scripts below -->
+    <script src="toolbox.js"></script>
+    <script src="colourPalette.js"></script>
+    <script src="helperFunctions.js"></script>
+
+    <script src="tools/freehandTool.js"></script>
+    <script src="tools/lineToTool.js"></script>
+    <script src="tools/mirrorDrawTool.js"></script>
+    <script src="tools/sprayCanTool.js"></script>
+    <script src="tools/rectangleTool.js"></script>
+    <script src="tools/textTool.js"></script>
+    <script src="tools/eraserTool.js"></script>
+    <script src="tools/polygonTool.js"></script>
+    <script src="tools/floodFillTool.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="box header">My Drawing App
+
+            <button id="clearButton">Clear</button>
+            <button id="saveImageButton">Save Image</button>
+            <button id="clearButton"> Undo </button>
+            <button id="saveImageButton">Redo</button>
+            <!-- <select type="number" id="npoints" min="3" max="100" value=5> -->
+        </div>
+        <div class="box" id="sidebar"></div>
+        <div id="content" style="margin: 10px;border: 10px"></div>
+        <div class=" box colourPalette "></div>
+        <div class="box options "></div>
+    </div>
+</body>
+
+</html>
