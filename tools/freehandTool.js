@@ -12,7 +12,7 @@ function FreehandTool() {
 
   this.draw = function () {
     //if the mouse is pressed
-    if (mouseIsPressed) {
+    if (isValidPos(mouseX, mouseY) && mouseIsPressed) {
       //check if they previousX and Y are -1. set them to the current
       //mouse X and Y if they are.
       console.log(mouseX, mouseY);
@@ -26,6 +26,7 @@ function FreehandTool() {
         line(previousMouseX, previousMouseY, mouseX, mouseY);
         previousMouseX = mouseX;
         previousMouseY = mouseY;
+        changed = true;
       }
     }
     //if the user has released the mouse we want to set the previousMouse values

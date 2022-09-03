@@ -1,6 +1,6 @@
 function LineToTool() {
-  this.icon = 'assets/lineTo.jpg';
-  this.name = 'LineTo';
+  this.icon = "assets/lineTo.jpg";
+  this.name = "LineTo";
   //They are -1 to start with because we haven't started drawing yet.
   var startMouseX = -1;
   var startMouseY = -1;
@@ -25,6 +25,7 @@ function LineToTool() {
       drawing = false;
       startMouseX = -1;
       startMouseY = -1;
+      saveState();
     }
   };
 }

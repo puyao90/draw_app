@@ -44,6 +44,7 @@ function setup() {
   // save pixels Density for fillColorTool
   pixelDensity(1);
   window.pd = pixelDensity();
+  bindFunctionUndoAndRedo();
 }
 
 function draw() {
@@ -78,31 +79,58 @@ function keyReleased() {
 
 function saveState() {
   if (stateIndex < states.length) {
+    console.log(">>>>>>");
     states = states.slice(0, stateIndex);
   }
   stateIndex++;
-  loadPixels();
+  // loadPixels();
   states.push(get());
   console.log("check point saved", stateIndex, states);
 }
 
 function undo() {
-  console.log("pressed ctrl+z, undo preivous operation", stateIndex, states);
-  if (!states || !states.length || stateIndex == 1) {
+  console.log(
+    "pressed ctrl+z, undo preivous operation",
+    stateIndex - 1,
+    states
+  );
+  if (!states || !states.length || stateIndex == 0) {
     console.log("already at init state!");
     return;
   }
-  stateIndex--;
-  image(states[stateIndex], 0, 0);
+  loadPixels();
+  background(255);
+  image(states[--stateIndex], 0, 0);
+  // updatePixels();
 }
 
 function redo() {
   console.log("pressed ctrl+y, redo now, index", stateIndex, states);
   stateIndex++;
   if (stateIndex < states.length) {
+    background(255);
     image(states[stateIndex], 0, 0);
   } else {
     console.log("no more records to restore");
     stateIndex = states.length - 1;
   }
+}
+
+function bindFunctionUndoAndRedo() {
+  select("#undo").mouseClicked(function () {
+    undo();
+  });
+  select("#redo").mouseClicked(function () {
+    redo();
+  });
+}
+
+var changed = false;
+function mouseReleased() {
+  if (changed && !isValidPos()) saveState();
+  changed = false;
+}
+
+function isValidPos(x, y) {
+  return x < width && y < height && x >= 0 && y >= 0;
 }

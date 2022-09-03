@@ -100,10 +100,6 @@ function matchedColor(x, y, targetColorString, initColorString) {
   // if color matchs init color then handle it
 }
 
-function isValidPos(x, y) {
-  return x < width && y < height && x >= 0 && y >= 0;
-}
-
 // return [R,G,B,A]
 function getColor(x, y_height) {
   let index = getIndexOfPos(x, y_height);
