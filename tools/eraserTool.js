@@ -11,8 +11,8 @@ function eraserTool() {
     let arr =color(selectedColor).levels;
     p.fill(arr[0],arr[1],arr[2], opacity);
     p.updatePixels();
-    p.stroke(arr[0],arr[1],arr[2], 255)
-    // p.fill(255, 255, 255);
+    p.stroke(1, 1, 1);
+    // p.fill(1, 1, 1);
     p.rect(x, y, size, size);
   };
 
