@@ -15,7 +15,7 @@ function freehandTool() {
     if (isValidPos(mouseX, mouseY) && mouseIsPressed) {
       //check if they previousX and Y are -1. set them to the current
       //mouse X and Y if they are.
-      console.log(mouseX, mouseY);
+      // console.log(mouseX, mouseY);
       if (previousMouseX == -1) {
         previousMouseX = mouseX;
         previousMouseY = mouseY;
@@ -23,6 +23,7 @@ function freehandTool() {
       //if we already have values for previousX and Y we can draw a line from
       //there to the current mouse location
       else {
+        setGlobalStyle();
         line(previousMouseX, previousMouseY, mouseX, mouseY);
         previousMouseX = mouseX;
         previousMouseY = mouseY;
@@ -36,5 +37,12 @@ function freehandTool() {
       previousMouseX = -1;
       previousMouseY = -1;
     }
+  };
+
+  this.populateOptions = function () {
+    addGlobalOptions();
+  };
+  this.unselectTool = function () {
+    select(".options").html("");
   };
 }

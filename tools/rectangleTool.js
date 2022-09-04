@@ -18,6 +18,7 @@ function rectangleTool() {
         //update the screen with the saved pixels to hide any previous line between mouse pressed and released
         updatePixels();
         noFill();
+        setGlobalStyle();
         rect(
           startMouseX,
           startMouseY,
@@ -32,5 +33,12 @@ function rectangleTool() {
       startMouseX = -1;
       startMouseY = -1;
     }
+  };
+
+  this.populateOptions = function () {
+    addGlobalOptions();
+  };
+  this.unselectTool = function () {
+    select(".options").html("");
   };
 }

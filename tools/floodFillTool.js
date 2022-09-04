@@ -7,7 +7,9 @@ function floodFillTool() {
     if (mouseIsPressed) readAndFill(mouseX, mouseY);
   };
 
-  this.populateOptions = function () {};
+  this.populateOptions = function () {
+    // addGlobalOptions();
+  };
 
   this.unselectTool = function () {};
 }
@@ -126,6 +128,8 @@ function readAndFill(x, y) {
   loadPixels();
   let currentColor = getColor(x, y);
   // console.log(">>> file", selectedColor.maxes["rgb"], currentColor);
-  floodFill(x, y, color(selectedColor).levels, currentColor);
+  var colArrary = color(selectedColor).levels;
+  colArrary[3] = opacity;
+  floodFill(x, y, colArrary, currentColor);
   updatePixels();
 }
