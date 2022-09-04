@@ -24,11 +24,12 @@ function setup() {
 
   //create a toolbox for storing the tools
   toolbox = new Toolbox();
-  selectShape = new SelectShapebox();
   //add the tools to the toolbox.
   toolbox.addTool(new FreehandTool());
   let mT1 = new MultipleToolsContainer("icon", "xxx");
-  mT1.addTools([new LineToTool(), new RectangleTool(), new polygonTool()]);
+  mT1
+    .setup()
+    .addTools([new LineToTool(), new RectangleTool(), new polygonTool()]);
   toolbox.addTool(mT1);
 
   // toolbox.addTool(new LineToTool());
@@ -50,7 +51,10 @@ function setup() {
   // save pixels Density for fillColorTool
   pixelDensity(1);
   window.pd = pixelDensity();
-  bindFunctionUndoAndRedo();
+  // bindFunctionUndoAndRedo();
+
+  select("#saveHistoryButton").mouseClicked(saveCurrentToHistory);
+  select("#clearHistoryButton").mouseClicked(clearHistory);
 }
 
 function draw() {
@@ -69,11 +73,18 @@ function keyPressed() {
   if (keyCode == CONTROL) {
     CTRL_PRESSED = true;
   }
-  if (keyCode == 90 && CTRL_PRESSED) {
-    undo();
+  // if (keyCode == 90 && CTRL_PRESSED) {
+  //   undo();
+  // }
+  // if (keyCode == 89 && CTRL_PRESSED) {
+  //   redo();
+  // }
+  // CRTL + S =>>> SAVE
+  if (keyCode == 83 && CTRL_PRESSED) {
+    saveCurrentToHistory();
   }
-  if (keyCode == 89 && CTRL_PRESSED) {
-    redo();
+  if (keyCode == 82 && CTRL_PRESSED) {
+    saveCurrentToHistory();
   }
 }
 
@@ -83,60 +94,67 @@ function keyReleased() {
   }
 }
 
-function saveState() {
+var stateMap = {};
+
+function clearHistory() {
+  options = document.querySelector("#historyList");
+  let selected = options[options.selectedIndex];
+  options.selectedIndex = -1;
+  for (var i = options.length - 1; i >= 0; i--) {
+    console.log(i, options[i]);
+    if (options[i] != selected) {
+      options.remove(i);
+    }
+  }
+  options.selectedIndex = 0;
+}
+
+function saveCurrentToHistory() {
   if (stateIndex < states.length) {
     console.log(">>>>>>");
     states = states.slice(0, stateIndex);
   }
+  let state = get();
+
+  let time = getCurrentTime();
+  stateMap[time] = state;
+  option = createElement("option").id(time).html(time);
+  // options = document.querySelector("#historyList");
+  // console.log(options.options);
+  select("#historyList").child(option);
+  // options.insertBefore(options.options[0], option.elt);
+  options = document.querySelector("#historyList");
+
+  options.insertBefore(option.elt, options[0]);
+
   stateIndex++;
-  // loadPixels();
+  loadPixels();
+
   states.push(get());
   console.log("check point saved", stateIndex, states);
 }
 
-function undo() {
-  console.log(
-    "pressed ctrl+z, undo preivous operation",
-    stateIndex - 1,
-    states
-  );
-  if (!states || !states.length || stateIndex == 0) {
-    console.log("already at init state!");
-    return;
-  }
-  loadPixels();
-  background(255);
-  image(states[--stateIndex], 0, 0);
-  // updatePixels();
-}
-
-function redo() {
-  console.log("pressed ctrl+y, redo now, index", stateIndex, states);
-  stateIndex++;
-  if (stateIndex < states.length) {
-    background(255);
-    image(states[stateIndex], 0, 0);
-  } else {
-    console.log("no more records to restore");
-    stateIndex = states.length - 1;
-  }
-}
-
-function bindFunctionUndoAndRedo() {
-  select("#undo").mouseClicked(function () {
-    undo();
-  });
-  select("#redo").mouseClicked(function () {
-    redo();
-  });
-}
-
-var changed = false;
-function mouseReleased() {
-  if (changed && !isValidPos()) saveState();
-  changed = false;
-}
-
 function isValidPos(x, y) {
   return x < width && y < height && x >= 0 && y >= 0;
+}
+
+function getCurrentTime() {
+  let today = new Date();
+  return today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+}
+
+function selectHistory(select) {
+  var value = select.options[select.selectedIndex].value;
+  if (value == "first") {
+    background(255);
+
+    //call loadPixels to update the drawing state
+    //this is needed for the mirror tool
+    loadPixels();
+  } else {
+    value = stateMap[value];
+    console.log("load history > ", value);
+    background(255);
+    image(value, 0, 0);
+  }
 }

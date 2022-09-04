@@ -1,15 +1,42 @@
 // Can only detect black edges
-function MultipleToolsContainer(icon, name = "Tools A") {
+function MultipleToolsContainer(icon, name) {
   this.icon = icon;
-  this.name = name;
+  this.name = name; // tool box will create div for it
+  this.divID = name;
   this.tools = [];
-  this.draw = function () {};
-
-  this.populateOptions = function () {};
-
-  this.unselectTool = function () {};
-
   this.selectedTool = null;
+  this.divClassName = "#" + name + "sideBarItem";
+  this.draw = function () {};
+  this.subToolsDivClassName = "ToolContainer" + name;
+  var self = this;
+  this.subToolsDiv = null;
+
+  this.populateOptions = function () {
+    this.drawTools();
+  };
+
+  this.drawTools = function () {
+    this.subToolsDiv = createDiv().class(this.subToolsDivClassName);
+    for (const tool of this.tools) {
+      this.addToolIcon(tool.icon, tool.name);
+      //if no tool is selected (ie. none have been added so far)
+      //make this tool the selected one.
+      if (this.selectedTool == null) {
+        this.selectTool(tool.name);
+      }
+    }
+    parentName = "wrapper";
+
+    console.log(this.subToolsDiv);
+    select(this.divClassName).child(this.subToolsDiv);
+    // select("." + parentName).child(this.subToolsDiv);
+  };
+
+  this.unselectTool = function () {
+    this.subToolsDiv.remove();
+    this.subToolsDiv = null;
+    // this.subToolsDiv.style("display", "None");
+  };
 
   var toolbarItemClick = function () {
     //remove any existing borders
@@ -28,7 +55,14 @@ function MultipleToolsContainer(icon, name = "Tools A") {
     for (const item of tools) {
       this.addTool(item);
     }
+    return this;
   };
+
+  this.setup = function () {
+    // console.log(this.subToolsDiv);
+    return this;
+  };
+
   //add a tool to the tools array
   this.addTool = function (tool) {
     //check that the object tool has an icon and a name
@@ -36,21 +70,19 @@ function MultipleToolsContainer(icon, name = "Tools A") {
       alert("make sure your tool has both a name and an icon");
     }
     this.tools.push(tool);
-    this.addToolIcon(tool.icon, tool.name);
-    //if no tool is selected (ie. none have been added so far)
-    //make this tool the selected one.
-    if (this.selectedTool == null) {
-      this.selectTool(tool.name);
-    }
   };
+
   //add a new tool icon to the html page
   this.addToolIcon = function (icon, name) {
     var sideBarItem = createDiv(
       "<img style='background-color:white' src='" + icon + "'>"
     );
+    // console.log(select(this.myDiv));
+    console.log(this.subToolsDiv);
+    // console.log("#" + name + "sideBarItem");
     sideBarItem.class("sideBarItem");
     sideBarItem.id(name + "sideBarItem");
-    sideBarItem.parent("sidebar");
+    this.subToolsDiv.child(sideBarItem);
     sideBarItem.mouseClicked(toolbarItemClick);
   };
 
