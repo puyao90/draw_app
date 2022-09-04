@@ -53,7 +53,7 @@ function Toolbox(parent = "sidebar") {
     this.tools.push(tool);
     addToolIcon(tool.icon, tool.name);
     if (tool.drawSmallFloatIcon) {
-      console.log(tool);
+      // console.log(tool);
       tool.drawSmallFloatIcon();
     }
     //if no tool is selected (ie. none have been added so far)
@@ -67,6 +67,7 @@ function Toolbox(parent = "sidebar") {
   this.selectTool = function (toolName) {
     //search through the tools for one that's name matches
     //toolName
+
     for (var i = 0; i < this.tools.length; i++) {
       if (this.tools[i].name == toolName) {
         // saveState()
@@ -83,7 +84,7 @@ function Toolbox(parent = "sidebar") {
           "border",
           "2px solid blue"
         );
-
+        
         //if the tool has an options area. Populate it now.
         if (this.selectedTool.hasOwnProperty("populateOptions")) {
           this.selectedTool.populateOptions();
@@ -94,4 +95,65 @@ function Toolbox(parent = "sidebar") {
       }
     }
   };
+}
+
+
+
+
+function addGlobalOptions() {
+  select(".colourPalette").child(
+    createDiv(
+      '<text>update stroke </text><input onchange="updateStroke()" type="number"   id="strokeSize" min="1" max="40" value=' +
+        strokeSize +
+        ">"
+    ).class("globalOptions")
+  );
+  select(".colourPalette").child(
+    createDiv(
+      '<text>update opacity </text><input onchange="updateOpacity()" type="number"  id="opacitySize" min="0" max="255" value=' +
+        opacity +
+        ">"
+    ).class("globalOptions")
+  );
+};
+
+function removeGlobalOptions(){
+  // select("#globalTool1").html("");
+  // select("#globalTool2").html("");
+}
+
+var strokeSize = 3;
+var opacity = 255;
+
+function updateStroke() {
+  console.log(parseInt(select("#strokeSize").value()));
+  strokeSize = parseInt(select("#strokeSize").value());
+}
+
+function updateOpacity() {
+  console.log(parseInt(select("#opacitySize").value()));
+  opacity = parseInt(select("#opacitySize").value());
+  let all = selectAll(".colourSwatches")
+
+  for (let index = 0; index < window.colours.length; index++) {
+    const colorString = window.colours[index];
+    let arr =color(colorString).levels;
+    const colorSW = all[index];
+    let op = opacity / 255
+    // console.log("background-color", "rgba(" + arr[0] + ","+ arr[1] +","+ arr[2] +","+ opacity+ ")")
+    colorSW.style("background-color", "rgba(" + arr[0] + ","+ arr[1] +","+ arr[2] +","+ op + ")")
+      }
+}
+
+function setGlobalStyle() {
+ 
+  
+  strokeWeight(strokeSize);
+  setGlobalFill()
+}
+
+function setGlobalFill(){
+  let arr =color(selectedColor).levels;
+  fill(arr[0],arr[1],arr[2], opacity);
+  stroke(arr[0],arr[1],arr[2], opacity);
 }

@@ -57,7 +57,7 @@ body {
 .wrapper {
   display: grid;
   height: 100%;
-  grid-template-columns: 70px 230px minmax(500px, 1fr);
+  grid-template-columns: 70px 450px minmax(500px, 1fr);
   grid-template-rows: 35px minmax(500px, 1fr) 160px;
   grid-template-areas: "header header header" "sidebar content content" "colourP colourP options";
   background-color: #fff;
@@ -97,4 +97,13 @@ body {
   max-height: 100px;
   max-width: 100px;
   margin: 5px;
+}
+
+.globalOptions {
+  box-sizing: border-box;
+  width: 250px;
+  height: 40px;
+  max-height: 40px;
+  max-width: 250px;
+  margin: 2px;
 }
