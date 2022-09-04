@@ -69,29 +69,61 @@ function Toolbox(parent = "sidebar") {
     //toolName
     for (var i = 0; i < this.tools.length; i++) {
       if (this.tools[i].name == toolName) {
-        // saveState()
-        //if the tool has an unselectTool method run it.
-        if (
-          this.selectedTool != null &&
-          this.selectedTool.hasOwnProperty("unselectTool")
-        ) {
-          this.selectedTool.unselectTool();
-        }
-        //select the tool and highlight it on the toolbar
         this.selectedTool = this.tools[i];
-        select("#" + toolName + "sideBarItem").style(
-          "border",
-          "2px solid blue"
-        );
-
-        //if the tool has an options area. Populate it now.
-        if (this.selectedTool.hasOwnProperty("populateOptions")) {
-          this.selectedTool.populateOptions();
-        }
       } else {
         // console.log(this.tools[i]);
         select("#" + this.tools[i].name + "sideBarItem").style("border", "0");
       }
     }
+    // saveState()
+    //if the tool has an unselectTool method run it.
+    if (
+      this.selectedTool != null &&
+      this.selectedTool.hasOwnProperty("unselectTool")
+    ) {
+      this.selectedTool.unselectTool();
+    }
+    //select the tool and highlight it on the toolbar
+
+    select("#" + toolName + "sideBarItem").style("border", "2px solid blue");
+
+    //if the tool has an options area. Populate it now.
+    if (this.selectedTool.hasOwnProperty("populateOptions")) {
+      // select(".options").html("");
+      this.selectedTool.populateOptions();
+    }
   };
+}
+
+addGlobalOptions = function () {
+  select(".options").child(
+    createDiv(
+      '<text>update stroke </text><input onchange="updateStroke()" type="number"  height="20" size="20" id="strokeSize" min="1" max="40" value=' +
+        strokeSize +
+        ">"
+    )
+  );
+  select(".options").child(
+    createDiv(
+      '<text>update opacity </text><input onchange="updateOpacity()" type="number"  height="20" size="20" id="opacitySize" min="0" max="255" value=' +
+        opacity +
+        ">"
+    )
+  );
+};
+var strokeSize = 3;
+var opacity = 255;
+function updateStroke() {
+  console.log(parseInt(select("#strokeSize").value()));
+  strokeSize = parseInt(select("#strokeSize").value());
+}
+
+function updateOpacity() {
+  console.log(parseInt(select("#opacitySize").value()));
+  opacity = parseInt(select("#opacitySize").value());
+}
+
+function setGlobalStyle() {
+  // stroke(33, 33, 33, 33);
+  strokeWeight(strokeSize);
 }

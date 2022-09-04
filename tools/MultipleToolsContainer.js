@@ -67,7 +67,7 @@ function multipleToolsContainer(icon, name) {
   };
 
   this.unselectTool = function () {
-    this.hiddeMenu();
+    // this.hiddeMenu();
     // this.subToolsDiv.style("display", "None");
   };
 
@@ -91,7 +91,6 @@ function multipleToolsContainer(icon, name) {
 
     //call loadPixels to make sure most recent changes are saved to pixel array
     self.hiddeMenu();
-    console.log(self);
     loadPixels();
   };
   this.addTools = function (tools) {
@@ -133,27 +132,26 @@ function multipleToolsContainer(icon, name) {
   this.selectSubTool = function (toolName) {
     for (var i = 0; i < this.tools.length; i++) {
       if (this.tools[i].name == toolName) {
-        if (
-          this.selectedTool != null &&
-          this.selectedTool.hasOwnProperty("unselectTool")
-        ) {
-          this.selectedTool.unselectTool();
-        }
         this.selectedTool = this.tools[i];
-        // console.log(select("#" + toolName + "sideBarItem").elt);
-        select("#" + toolName + "sideBarItem").style(
-          "border",
-          "2px solid blue"
-        );
-        // console.log(select("#" + toolName + "sideBarItem").elt);
-        if (this.selectedTool.hasOwnProperty("populateOptions")) {
-          this.selectedTool.populateOptions();
-        }
       } else {
         // console.log(this.tools[i]);
         // console.log("#" + this.tools[i].name + "sideBarItem");
         select("#" + this.tools[i].name + "sideBarItem").style("border", "0");
+        this.tools[i].unselectTool();
       }
+    }
+    if (
+      this.selectedTool != null &&
+      this.selectedTool.hasOwnProperty("unselectTool")
+    ) {
+      this.selectedTool.unselectTool();
+    }
+
+    // console.log(select("#" + toolName + "sideBarItem").elt);
+    select("#" + toolName + "sideBarItem").style("border", "2px solid blue");
+    // console.log(select("#" + toolName + "sideBarItem").elt);
+    if (this.selectedTool.hasOwnProperty("populateOptions")) {
+      this.selectedTool.populateOptions();
     }
 
     this.toolBox.refreshIcon(this, this.selectedTool);
@@ -166,7 +164,6 @@ function multipleToolsContainer(icon, name) {
   };
 
   this.showMenu = function () {
-    console.log("show");
     this.subToolsDiv.show();
   };
 }

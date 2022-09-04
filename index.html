@@ -3,8 +3,11 @@
 
 <head>
     <script src="lib/p5.min.js"></script>
-    <script src="lib/p5.dom.js"></script>
+    <script src="lib/p5.dom.min.js"></script>
     <script src="sketch.js"></script>
+
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js"></script> -->
 
     <!-- add extra scripts below -->
     <script src="toolbox.js"></script>
@@ -29,7 +32,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="box header">My Drawing App
+        <div class="box header"> Let's draw!
             <button id="clearButton">Clear</button>
             <button id="saveImageButton">Download Image</button>
             <text> || </text>
@@ -44,7 +47,7 @@
         </div>
         <div class="box" id="sidebar"></div>
         <div id="content" style="margin: 10px;border: 10px"></div>
-        <div class=" box colourPalette "></div>
+        <div class="box colourPalette "></div>
         <div class="box options"></div>
     </div>
 </body>
