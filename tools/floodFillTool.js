@@ -34,7 +34,7 @@ function floodFill(x, y, targetColor, initColor) {
     );
   }
 
-  while (needToCheck.length > 0 && cnt < 1000000) {
+  while (needToCheck.length > 0) {
     compressedValue = needToCheck.pop();
     pos = decompressPos(compressedValue);
     cnt++;

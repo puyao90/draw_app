@@ -18,6 +18,7 @@ function rectangleTool() {
         //update the screen with the saved pixels to hide any previous line between mouse pressed and released
         updatePixels();
         noFill();
+        setGlobalStroke();
         rect(
           startMouseX,
           startMouseY,

@@ -21,6 +21,7 @@ function polygonTool() {
         //update the screen with the saved pixels to hide any previous line between mouse pressed and released
         updatePixels();
         noFill();
+        setGlobalStroke()
         radius = pow(pow(mouseX - startMouseX, 2) + pow(mouseY - startMouseY, 2), 0.5);
         polygon(startMouseX, startMouseY, radius, this.npoints);
       }

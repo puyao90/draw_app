@@ -146,14 +146,19 @@ function updateOpacity() {
 }
 
 function setGlobalStyle() {
- 
-  
+
   strokeWeight(strokeSize);
   setGlobalFill()
+  setGlobalStroke()
 }
 
 function setGlobalFill(){
   let arr =color(selectedColor).levels;
   fill(arr[0],arr[1],arr[2], opacity);
+  stroke(arr[0],arr[1],arr[2], opacity);
+}
+
+function setGlobalStroke(){
+  let arr =color(selectedColor).levels;
   stroke(arr[0],arr[1],arr[2], opacity);
 }

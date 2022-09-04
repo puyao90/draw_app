@@ -17,6 +17,7 @@ function lineToTool() {
       } else {
         //update the screen with the saved pixels to hide any previous line between mouse pressed and released
         updatePixels();
+        setGlobalStroke();
         line(startMouseX, startMouseY, mouseX, mouseY);
       }
     } else if (drawing) {

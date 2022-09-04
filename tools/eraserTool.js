@@ -8,9 +8,11 @@ function eraserTool() {
     if (p == undefined) {
       p = window;
     }
+    let arr =color(selectedColor).levels;
+    p.fill(arr[0],arr[1],arr[2], opacity);
     p.updatePixels();
-    p.stroke(1, 1, 1);
-    p.fill(255, 255, 255);
+    p.stroke(arr[0],arr[1],arr[2], 255)
+    // p.fill(255, 255, 255);
     p.rect(x, y, size, size);
   };
 
@@ -22,7 +24,8 @@ function eraserTool() {
     if (mouseIsPressed && mouseY <= canvasContainer.size().height) {
       // begin erase
       updatePixels();
-      fill(255, 255, 255);
+      selectedColor.levels
+      setGlobalFill()
       noStroke();
       rect(startMouseX, startMouseY, size, size);
       loadPixels();
