@@ -12,7 +12,9 @@ function textTool() {
       drawing = true;
       updatePixels();
       textSize(select('#textSize').value());
+      
       setGlobalFill()
+      strokeWeight(2);
       text(select('#textBody').value(), startMouseX, startMouseY, 70, 80);
       mouseIsPressed = false;
     }
