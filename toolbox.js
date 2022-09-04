@@ -67,6 +67,7 @@ function Toolbox(parent = "sidebar") {
   this.selectTool = function (toolName) {
     //search through the tools for one that's name matches
     //toolName
+    loadPixels();
     for (var i = 0; i < this.tools.length; i++) {
       if (this.tools[i].name == toolName) {
         this.selectedTool = this.tools[i];

@@ -130,6 +130,7 @@ function multipleToolsContainer(icon, name) {
 
   this.selectTool = function () {};
   this.selectSubTool = function (toolName) {
+    loadPixels();
     for (var i = 0; i < this.tools.length; i++) {
       if (this.tools[i].name == toolName) {
         this.selectedTool = this.tools[i];
