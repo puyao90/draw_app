@@ -38,6 +38,7 @@ function multipleToolsContainer(icon, name) {
       // this.subToolsDiv.elt.onmouseover = () => {
       //   canClose = true;
       // };
+      loadPixels()
     } else {
       this.showMenu();
     }
@@ -69,6 +70,13 @@ function multipleToolsContainer(icon, name) {
   this.unselectTool = function () {
     // this.hiddeMenu();
     // this.subToolsDiv.style("display", "None");
+    loadPixels();
+    try {
+      this.selectedTool.unselectTool();
+    } catch (error) {
+      
+    }
+    
   };
 
   this.drawSmallFloatIcon = function () {

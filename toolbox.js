@@ -11,13 +11,14 @@ function Toolbox(parent = "sidebar") {
     // for (var i = 0; i < items.length; i++) {
     //   items[i].style("border", "0");
     // }
-
+    // updatePixels();
+    loadPixels();
     var toolName = this.id().split("sideBarItem")[0];
     // self.resetInitstate();
     self.selectTool(toolName);
 
     //call loadPixels to make sure most recent changes are saved to pixel array
-    loadPixels();
+  
   };
 
   //add a new tool icon to the html page
@@ -67,7 +68,7 @@ function Toolbox(parent = "sidebar") {
   this.selectTool = function (toolName) {
     //search through the tools for one that's name matches
     //toolName
-    loadPixels();
+    // loadPixels();
     for (var i = 0; i < this.tools.length; i++) {
       if (this.tools[i].name == toolName) {
         this.selectedTool = this.tools[i];
@@ -76,7 +77,7 @@ function Toolbox(parent = "sidebar") {
         select("#" + this.tools[i].name + "sideBarItem").style("border", "0");
       }
     }
-    // saveState()
+
     //if the tool has an unselectTool method run it.
     if (
       this.selectedTool != null &&
@@ -91,6 +92,7 @@ function Toolbox(parent = "sidebar") {
     //if the tool has an options area. Populate it now.
     if (this.selectedTool.hasOwnProperty("populateOptions")) {
       // select(".options").html("");
+
       this.selectedTool.populateOptions();
     }
   };

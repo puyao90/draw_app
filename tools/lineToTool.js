@@ -30,8 +30,6 @@ function lineToTool() {
   };
 
   this.populateOptions = function () {
-    loadPixels();
-    updatePixels();
     addGlobalOptions();
   };
   this.unselectTool = function () {
