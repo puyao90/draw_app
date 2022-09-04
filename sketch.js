@@ -25,23 +25,21 @@ function setup() {
   //create a toolbox for storing the tools
   toolbox = new Toolbox();
   //add the tools to the toolbox.
-  toolbox.addTool(new FreehandTool());
-  let mT1 = new MultipleToolsContainer("icon", "xxx");
-  mT1
+  toolbox.addTool(new freehandTool());
+  let multipleTools = new multipleToolsContainer("icon", "xxx");
+  multipleTools
     .setup()
-    .addTools([new LineToTool(), new RectangleTool(), new polygonTool()]);
-  toolbox.addTool(mT1);
+    .addTools([new lineToTool(), new rectangleTool(), new polygonTool()]);
+  toolbox.addTool(multipleTools);
 
-  // toolbox.addTool(new LineToTool());
-  // toolbox.addTool(new RectangleTool());
-  // toolbox.addTool(new polygonTool());
-  // selectShape.addTool(new RectangleTool());
-  // selectShape.addTool(new polygonTool());
+  window.multipleTools = multipleTools;
+
   toolbox.addTool(new sprayCanTool());
   toolbox.addTool(new floodFillTool());
   toolbox.addTool(new mirrorDrawTool());
   toolbox.addTool(new textTool());
   toolbox.addTool(new eraserTool());
+  toolbox.addTool(new stampTool());
 
   // toolbox.setInitstate(() => {
   //   colourP.set()
@@ -69,6 +67,12 @@ function draw() {
   }
 }
 
+var mouseIsClickedAt = 0;
+
+function mouseClicked() {
+  mouseIsClickedAt = Date.now();
+}
+
 function keyPressed() {
   if (keyCode == CONTROL) {
     CTRL_PRESSED = true;
@@ -94,7 +98,7 @@ function keyReleased() {
   }
 }
 
-var stateMap = {};
+var historyRecords = {};
 
 function clearHistory() {
   options = document.querySelector("#historyList");
@@ -104,6 +108,7 @@ function clearHistory() {
     console.log(i, options[i]);
     if (options[i] != selected) {
       options.remove(i);
+      if (options[i]) delete historyRecords[options[i].value];
     }
   }
   options.selectedIndex = 0;
@@ -117,7 +122,8 @@ function saveCurrentToHistory() {
   let state = get();
 
   let time = getCurrentTime();
-  stateMap[time] = state;
+  historyRecords[time] = state;
+  console.log("check point saved", historyRecords);
   option = createElement("option").id(time).html(time);
   // options = document.querySelector("#historyList");
   // console.log(options.options);
@@ -127,11 +133,11 @@ function saveCurrentToHistory() {
 
   options.insertBefore(option.elt, options[0]);
 
-  stateIndex++;
-  loadPixels();
+  // stateIndex++;
+  // loadPixels();
 
-  states.push(get());
-  console.log("check point saved", stateIndex, states);
+  // states.push(get());
+  // console.log("check point saved", stateIndex, states);
 }
 
 function isValidPos(x, y) {
@@ -140,7 +146,17 @@ function isValidPos(x, y) {
 
 function getCurrentTime() {
   let today = new Date();
-  return today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  return (
+    "Saved Record:" +
+    today.getHours() +
+    ":" +
+    today.getMinutes() +
+    ":" +
+    today.getSeconds() +
+    ":" +
+    today.getMilliseconds() +
+    "ms"
+  );
 }
 
 function selectHistory(select) {
@@ -152,7 +168,7 @@ function selectHistory(select) {
     //this is needed for the mirror tool
     loadPixels();
   } else {
-    value = stateMap[value];
+    value = historyRecords[value];
     console.log("load history > ", value);
     background(255);
     image(value, 0, 0);

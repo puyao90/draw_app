@@ -1,4 +1,4 @@
-function FreehandTool() {
+function freehandTool() {
   //set an icon and a name for the object
   this.icon = "assets/freehand.jpg";
   this.name = "freehand";

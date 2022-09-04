@@ -1,6 +1,6 @@
-function RectangleTool() {
-  this.icon = 'assets/recTool.jpg';
-  this.name = 'RecTool';
+function rectangleTool() {
+  this.icon = "assets/recTool.jpg";
+  this.name = "RecTool";
   //They are -1 to start with because we haven't started drawing yet.
   var startMouseX = -1;
   var startMouseY = -1;
@@ -18,7 +18,12 @@ function RectangleTool() {
         //update the screen with the saved pixels to hide any previous line between mouse pressed and released
         updatePixels();
         noFill();
-        rect(startMouseX, startMouseY, mouseX - startMouseX, mouseY - startMouseY);
+        rect(
+          startMouseX,
+          startMouseY,
+          mouseX - startMouseX,
+          mouseY - startMouseY
+        );
       }
     } else if (drawing) {
       //save the pixels with the most recent line and reset the drawing bool and start locations

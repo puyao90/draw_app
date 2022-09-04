@@ -1,22 +1,52 @@
 // Can only detect black edges
-function MultipleToolsContainer(icon, name) {
+function multipleToolsContainer(icon, name) {
   this.icon = icon;
   this.name = name; // tool box will create div for it
   this.divID = name;
   this.tools = [];
   this.selectedTool = null;
+  this.toolBox = null;
   this.divClassName = "#" + name + "sideBarItem";
-  this.draw = function () {};
+  this.draw = function () {
+    if (this.selectedTool) {
+      this.selectedTool.draw();
+    }
+  };
   this.subToolsDivClassName = "ToolContainer" + name;
   var self = this;
   this.subToolsDiv = null;
 
   this.populateOptions = function () {
     this.drawTools();
+
+    // setTimeout(() => {
+    //   this.hiddeMenu();
+    //   console.log(">>> now operation 5s hide now");
+    // }, 5000);
   };
 
   this.drawTools = function () {
-    this.subToolsDiv = createDiv().class(this.subToolsDivClassName);
+    if (this.subToolsDiv == null) {
+      this.subToolsDiv = createDiv().id(this.subToolsDivClassName);
+      window.subToolsDiv = this.subToolsDiv.elt;
+      this.subToolsDiv.elt.onmouseleave = () => {
+        this.hiddeMenu();
+      };
+      this.getLeftIcon().elt.onmouseover = () => {
+        this.showMenu();
+      };
+      // this.subToolsDiv.elt.onmouseover = () => {
+      //   canClose = true;
+      // };
+    } else {
+      this.showMenu();
+    }
+
+    this.subToolsDiv.class("subTools");
+    window.xxx = this.getLeftIcon().elt;
+    let clientRect = this.getLeftIcon().elt.getBoundingClientRect();
+    this.subToolsDiv.style("top", clientRect.top + "px");
+    this.subToolsDiv.style("height", this.tools.length * 60 + "px");
     for (const tool of this.tools) {
       this.addToolIcon(tool.icon, tool.name);
       //if no tool is selected (ie. none have been added so far)
@@ -27,34 +57,50 @@ function MultipleToolsContainer(icon, name) {
     }
     parentName = "wrapper";
 
-    console.log(this.subToolsDiv);
-    select(this.divClassName).child(this.subToolsDiv);
+    // console.log(this.subToolsDiv);
+    this.getLeftIcon().child(this.subToolsDiv);
     // select("." + parentName).child(this.subToolsDiv);
   };
 
+  this.getLeftIcon = function () {
+    return select(this.divClassName);
+  };
+
   this.unselectTool = function () {
-    this.subToolsDiv.remove();
-    this.subToolsDiv = null;
+    this.hiddeMenu();
     // this.subToolsDiv.style("display", "None");
   };
 
-  var toolbarItemClick = function () {
+  this.drawSmallFloatIcon = function () {
+    let icon = this.getLeftIcon();
+
+    icon.child(
+      createDiv(
+        "<img id='smallIcon' style='position: relative; bottom:30px; left:30px;' width=20 src='" +
+          "assets/smallIcon.png" +
+          "'>"
+      )
+    );
+  };
+
+  var menuClick = function () {
     //remove any existing borders
-    var items = selectAll(".sideBarItem");
-    for (var i = 0; i < items.length; i++) {
-      items[i].style("border", "0");
-    }
 
     var toolName = this.id().split("sideBarItem")[0];
-    self.selectTool(toolName);
+    self.selectSubTool(toolName);
 
     //call loadPixels to make sure most recent changes are saved to pixel array
+    self.hiddeMenu();
+    console.log(self);
     loadPixels();
   };
   this.addTools = function (tools) {
     for (const item of tools) {
       this.addTool(item);
+
+      this.icon = item.icon;
     }
+
     return this;
   };
 
@@ -77,40 +123,50 @@ function MultipleToolsContainer(icon, name) {
     var sideBarItem = createDiv(
       "<img style='background-color:white' src='" + icon + "'>"
     );
-    // console.log(select(this.myDiv));
-    console.log(this.subToolsDiv);
-    // console.log("#" + name + "sideBarItem");
     sideBarItem.class("sideBarItem");
     sideBarItem.id(name + "sideBarItem");
     this.subToolsDiv.child(sideBarItem);
-    sideBarItem.mouseClicked(toolbarItemClick);
+    sideBarItem.mouseClicked(menuClick);
   };
 
-  this.selectTool = function (toolName) {
-    //search through the tools for one that's name matches
-    //toolName
+  this.selectTool = function () {};
+  this.selectSubTool = function (toolName) {
     for (var i = 0; i < this.tools.length; i++) {
       if (this.tools[i].name == toolName) {
-        // saveState()
-        //if the tool has an unselectTool method run it.
         if (
           this.selectedTool != null &&
           this.selectedTool.hasOwnProperty("unselectTool")
         ) {
           this.selectedTool.unselectTool();
         }
-        //select the tool and highlight it on the toolbar
         this.selectedTool = this.tools[i];
+        // console.log(select("#" + toolName + "sideBarItem").elt);
         select("#" + toolName + "sideBarItem").style(
           "border",
           "2px solid blue"
         );
-
-        //if the tool has an options area. Populate it now.
+        // console.log(select("#" + toolName + "sideBarItem").elt);
         if (this.selectedTool.hasOwnProperty("populateOptions")) {
           this.selectedTool.populateOptions();
         }
+      } else {
+        // console.log(this.tools[i]);
+        // console.log("#" + this.tools[i].name + "sideBarItem");
+        select("#" + this.tools[i].name + "sideBarItem").style("border", "0");
       }
     }
+
+    this.toolBox.refreshIcon(this, this.selectedTool);
+    // this.drawSmallFloatIcon();
+    // this.hiddeMenu();
+  };
+
+  this.hiddeMenu = function () {
+    this.subToolsDiv.style("display", "none");
+  };
+
+  this.showMenu = function () {
+    console.log("show");
+    this.subToolsDiv.show();
   };
 }

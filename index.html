@@ -20,7 +20,9 @@
     <script src="tools/eraserTool.js"></script>
     <script src="tools/polygonTool.js"></script>
     <script src="tools/floodFillTool.js"></script>
-    <script src="tools/MultipleToolsContainer.js"></script>
+    <script src="tools/multipleToolsContainer.js"></script>
+    <script src="tools/stampTool.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -29,7 +31,7 @@
     <div class="wrapper">
         <div class="box header">My Drawing App
             <button id="clearButton">Clear</button>
-            <button id="saveImageButton">Save Image</button>
+            <button id="saveImageButton">Download Image</button>
             <text> || </text>
             <button id="saveHistoryButton">Save History (ctrl+s)</button>
             <!-- <button id="undo"> Undo </button>
@@ -43,7 +45,7 @@
         <div class="box" id="sidebar"></div>
         <div id="content" style="margin: 10px;border: 10px"></div>
         <div class=" box colourPalette "></div>
-        <div class="box options "></div>
+        <div class="box options"></div>
     </div>
 </body>
 

@@ -1,9 +1,7 @@
 // Can only detect black edges
 function floodFillTool() {
-  this.icon = "assets/incon.png";
+  this.icon = "assets/floodFill.jpeg";
   this.name = "FillColorTool";
-  var startMouseX = -1;
-  var startMouseY = -1;
 
   this.draw = function () {
     if (mouseIsPressed) readAndFill(mouseX, mouseY);

@@ -7,10 +7,10 @@ function Toolbox(parent = "sidebar") {
 
   var toolbarItemClick = function () {
     //remove any existing borders
-    var items = selectAll(".sideBarItem");
-    for (var i = 0; i < items.length; i++) {
-      items[i].style("border", "0");
-    }
+    // var items = selectAll(".sideBarItem");
+    // for (var i = 0; i < items.length; i++) {
+    //   items[i].style("border", "0");
+    // }
 
     var toolName = this.id().split("sideBarItem")[0];
     // self.resetInitstate();
@@ -31,6 +31,10 @@ function Toolbox(parent = "sidebar") {
     sideBarItem.mouseClicked(toolbarItemClick);
   };
 
+  this.refreshIcon = function (toolContainer, tool) {
+    select("#" + toolContainer.name + "sideBarItem").child()[0].src = tool.icon;
+  };
+
   // if won't invoker, tools like eraser will modfiy fill and stroke, make everything invisable
   //   this.resetInitstate = function () {
   //     this.reset();
@@ -48,11 +52,16 @@ function Toolbox(parent = "sidebar") {
     }
     this.tools.push(tool);
     addToolIcon(tool.icon, tool.name);
+    if (tool.drawSmallFloatIcon) {
+      console.log(tool);
+      tool.drawSmallFloatIcon();
+    }
     //if no tool is selected (ie. none have been added so far)
     //make this tool the selected one.
     if (this.selectedTool == null) {
       this.selectTool(tool.name);
     }
+    tool.toolBox = this;
   };
 
   this.selectTool = function (toolName) {
@@ -79,6 +88,9 @@ function Toolbox(parent = "sidebar") {
         if (this.selectedTool.hasOwnProperty("populateOptions")) {
           this.selectedTool.populateOptions();
         }
+      } else {
+        // console.log(this.tools[i]);
+        select("#" + this.tools[i].name + "sideBarItem").style("border", "0");
       }
     }
   };
